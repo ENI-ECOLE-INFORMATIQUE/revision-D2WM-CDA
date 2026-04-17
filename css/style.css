@@ -1,0 +1,13 @@
+ @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+       
+@keyframes slideDown {
+    from { opacity: 0; max-height: 0; }
+    to { opacity: 1; max-height: 500px; }
+}
+
+.fade-in { animation: fadeIn 0.5s ease-in; }
+
+.slide-down { animation: slideDown 0.3s ease-out; }

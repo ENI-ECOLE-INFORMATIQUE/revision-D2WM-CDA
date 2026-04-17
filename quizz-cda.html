@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz CDA - Concepteur Développeur d'Application</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./style/style.css">
+</head>
+<body class="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 min-h-screen">
+    <div class="container max-w-5xl mx-auto px-4 py-6">
+        <!-- Header -->
+        <div class="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-8 mb-6 text-center">
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
+                🎯 Quiz CDA
+            </h1>
+            <p class="text-gray-600 text-lg mb-6">Testez vos compétences pour le titre CDA</p>
+
+            <!-- Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-blue-50 rounded-2xl p-4">
+                    <div class="text-3xl font-bold text-blue-600" id="currentQuestion">0</div>
+                    <div class="text-sm text-gray-600">Question</div>
+                </div>
+                <div class="bg-purple-50 rounded-2xl p-4">
+                    <div class="text-3xl font-bold text-purple-600" id="totalQuestions">75</div>
+                    <div class="text-sm text-gray-600">Total</div>
+                </div>
+                <div class="bg-green-50 rounded-2xl p-4">
+                    <div class="text-3xl font-bold text-green-600" id="score">0%</div>
+                    <div class="text-sm text-gray-600">Score</div>
+                </div>
+                <div class="bg-orange-50 rounded-2xl p-4">
+                    <div class="text-3xl font-bold text-orange-600" id="timer">00:00</div>
+                    <div class="text-sm text-gray-600">Temps</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Start Screen -->
+        <div id="startScreen" class="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-10 text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-4">🚀 Prêt pour le défi ?</h2>
+            <p class="text-gray-600 text-lg mb-6">Ce quiz couvre les <strong>8 compétences CDA</strong> avec 75 questions optimisées</p>
+
+            <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-6 border-l-4 border-blue-500">
+                <h3 class="text-xl font-bold text-blue-900 mb-3">📚 Compétences couvertes :</h3>
+                <ul class="text-left text-blue-800 space-y-2 max-w-2xl mx-auto">
+                    <li><span class="font-semibold">C1</span> - Installer et configurer son environnement de travail</li>
+                    <li><span class="font-semibold">C2</span> - Maquetter des interfaces utilisateur web ou web mobile</li>
+                    <li><span class="font-semibold">C3</span> - Réaliser des interfaces utilisateur statiques web ou web mobile</li>
+                    <li><span class="font-semibold">C4</span> - Développer la partie dynamique des interfaces utilisateur</li>
+                    <li><span class="font-semibold">C5</span> - Mettre en place une base de données relationnelle</li>
+                    <li><span class="font-semibold">C6</span> - Développer des composants d'accès aux données</li>
+                    <li><span class="font-semibold">C7</span> - Développer des composants métier côté serveur</li>
+                    <li><span class="font-semibold">C8</span> - Documenter le déploiement d'une application dynamique</li>
+                </ul>
+            </div>
+
+            <button onclick="startQuiz()" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-10 py-4 rounded-full text-xl font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                Commencer le Quiz 🎓
+            </button>
+        </div>
+
+        <!-- Quiz Card -->
+        <div id="quizCard" class="hidden bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-8">
+            <div class="flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-200">
+                <span id="questionNumber" class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-bold">Question 1</span>
+                <span id="competence" class="bg-purple-500 text-white px-4 py-2 rounded-full text-sm font-bold">C1</span>
+                <span id="category" class="bg-green-500 text-white px-4 py-2 rounded-full text-xs font-bold">Catégorie</span>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
+                <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+
+            <div id="questionText" class="text-2xl text-gray-800 font-medium mb-8 leading-relaxed"></div>
+
+            <ul id="optionsList" class="space-y-3 mb-8"></ul>
+
+            <div id="explanation" class="hidden bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg mb-6">
+                <h4 class="text-blue-800 font-bold mb-2">💡 Explication</h4>
+                <p id="explanationText" class="text-gray-700"></p>
+            </div>
+
+            <!-- Navigation -->
+            <div class="flex justify-between items-center gap-4">
+                <button onclick="previousQuestion()" id="prevBtn" class="bg-gray-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                    ← Précédent
+                </button>
+                <button onclick="nextQuestion()" id="nextBtn" class="bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transition-all">
+                    Suivant →
+                </button>
+                <button onclick="submitQuiz()" id="submitBtn" class="hidden bg-green-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-green-600 transition-all">
+                    Terminer ✓
+                </button>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="resultsCard" class="hidden bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-10 text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">🎉 Quiz terminé !</h2>
+
+            <div id="scoreCircle" class="w-48 h-48 mx-auto mb-6 rounded-full flex items-center justify-center text-5xl font-bold text-white shadow-2xl">
+                <span id="finalScore">0%</span>
+            </div>
+
+            <div id="scoreText" class="text-xl text-gray-700 mb-8"></div>
+
+            <div id="categoryBreakdown" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"></div>
+
+            <button onclick="restartQuiz()" class="bg-gradient-to-r from-red-500 to-pink-600 text-white px-10 py-4 rounded-full text-xl font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300">
+                Recommencer 🔄
+            </button>
+        </div>
+    </div>
+
+    <script src="./js/quizz-cda.js"></script>
+    <script src="./js/script.js"></script>
+</body>
+</html>
