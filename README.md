@@ -65,14 +65,14 @@ git clone https://github.com/ENI-ECOLE-INFORMATIQUE/revision-D2WM-CDA.git
 ```
 ---
 
-##💡 Conseils pour réussir
+## 💡 Conseils pour réussir
 - Coder tous les jours
 - Comprendre plutôt que copier
 - Versionner ses projets
 - Lire du code existant
 - Aller au-delà du programme
 
-##🤝 Contribution
+## 🤝 Contribution
 Les contributions sont les bienvenues !
 
 - Fork du projet
@@ -90,4 +90,4 @@ N'hésitez pas à proposer des améliorations ou des idées 💡
 Ce projet est à vocation pédagogique.
 Utilisation libre dans le cadre de la formation.
 
-##🔥 Bon code et bonne progression vers le niveau CDA !
+## 🔥 Bon code et bonne progression vers le niveau CDA !
