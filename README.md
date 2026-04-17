@@ -66,7 +66,8 @@ git clone https://github.com/ENI-ECOLE-INFORMATIQUE/revision-D2WM-CDA.git
 
 ---
 ## Pour accéder à l'application en ligne 
-https://eni-ecole-informatique.github.io/revision-D2WM-CDA/quizz-cda.html
+
+🎯 **[Cliquez ici pour accéder au quiz en ligne](https://eni-ecole-informatique.github.io/revision-D2WM-CDA/quizz-cda.html)**
 
 ---
 
