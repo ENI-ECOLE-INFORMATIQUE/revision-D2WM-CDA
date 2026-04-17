@@ -275,3 +275,8 @@ function getMotivation(score) {
     if (score >= 40) return "📈 Continue, tu progresses bien.";
     return "🚀 Ne lâche rien, la progression est en cours !";
 }
+
+function toggleMenu() {
+    const menu = document.getElementById("mobileMenu");
+    menu.classList.toggle("hidden");
+}
