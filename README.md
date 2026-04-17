@@ -63,6 +63,11 @@ Les formations D2WM et CDA permettent d’accéder à des compétences professio
 ```bash
 git clone https://github.com/ENI-ECOLE-INFORMATIQUE/revision-D2WM-CDA.git
 ```
+
+---
+## Pour accéder à l'application en ligne 
+https://eni-ecole-informatique.github.io/revision-D2WM-CDA/quizz-cda.html
+
 ---
 
 ## 💡 Conseils pour réussir
