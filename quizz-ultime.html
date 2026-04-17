@@ -3,198 +3,1571 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Quiz interactif pour réviser le passage D2WM vers CDA avec 75 questions couvrant les 8 compétences.">
-    <meta name="author" content="ENI École Informatique">
+    <title>Quiz Ultime CDA - 50 Questions Expertises</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="Quiz D2WM → CDA">
-    <meta property="og:description" content="Testez vos compétences CDA avec ce quiz interactif.">
-    <meta property="og:type" content="website">
-    <meta property="og:image" content="preview.png">
-    <title>Quiz D2WM -> CDA - Concepteur Développeur d'Application</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="./style/style.css">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#4f46e5">
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 15px;
+            color: #2c3e50;
+            min-width: 120px;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            display: block;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .quiz-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .quiz-card.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .question-number {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .question-category {
+            background: #f39c12;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .difficulty {
+            background: #e74c3c;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .difficulty.medium {
+            background: #f39c12;
+        }
+
+        .difficulty.easy {
+            background: #27ae60;
+        }
+
+        .question-text {
+            font-size: 1.3em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .options-list {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .option-item {
+            margin-bottom: 12px;
+        }
+
+        .option-btn {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: white;
+            color: #2c3e50;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 16px;
+            position: relative;
+            padding-left: 45px;
+        }
+
+        .option-btn:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: translateX(5px);
+        }
+
+        .option-btn.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .option-btn.correct {
+            border-color: #27ae60;
+            background: #27ae60;
+            color: white;
+        }
+
+        .option-btn.incorrect {
+            border-color: #e74c3c;
+            background: #e74c3c;
+            color: white;
+        }
+
+        .option-btn::before {
+            content: "";
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .option-btn.selected::before,
+        .option-btn.correct::before,
+        .option-btn.incorrect::before {
+            background: white;
+            border-color: white;
+        }
+
+        .explanation {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .explanation.show {
+            display: block;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 500px;
+            }
+        }
+
+        .explanation h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .explanation p {
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-prev {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-next {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-submit {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-restart {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .results-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .results-card.show {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5em;
+            font-weight: bold;
+            color: white;
+        }
+
+        .score-excellent {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+
+        .score-good {
+            background: linear-gradient(135deg, #f39c12, #f1c40f);
+        }
+
+        .score-average {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+        }
+
+        .score-poor {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .score-text {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .category-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .category-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .category-name {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .category-score {
+            font-size: 1.5em;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .start-screen {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .start-screen h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+
+        .start-screen p {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .start-screen ul {
+            text-align: left;
+            max-width: 600px;
+            margin: 20px auto;
+            color: #2c3e50;
+        }
+
+        .start-screen li {
+            margin-bottom: 10px;
+        }
+
+        .btn-start {
+            background: #27ae60;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+        }
+
+        .btn-start:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .question-text {
+                font-size: 1.1em;
+            }
+
+            .option-btn {
+                padding: 12px 15px;
+                padding-left: 40px;
+                font-size: 14px;
+            }
+
+            .navigation {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 min-h-screen">
-    <nav class="bg-white/90 backdrop-blur-lg shadow-lg rounded-b-2xl mb-6">
-    <div class="max-w-6xl mx-auto px-4">
-        <div class="flex justify-between items-center h-16">
-
-            <!-- Logo / Titre -->
-            <div class="flex items-center space-x-3">
-                <span class="text-xl font-bold text-blue-600">🎓 Quiz CDA</span>
-            </div>
-
-            <!-- Menu desktop -->
-            <div class="hidden md:flex items-center space-x-6 font-medium">
-
-                <a href="quizz-cda.html" class="text-gray-700 hover:text-blue-600 transition">
-                    🏠 Accueil
-                </a>
-
-                <a href="quizz-avance.html" class="text-gray-700 hover:text-purple-600 transition">
-                    🚀 Quiz Avancé
-                </a>
-
-                <a href="quizz-ultime.html" class="text-gray-700 hover:text-pink-600 transition">
-                    🔥 Quiz Ultime
-                </a>
-
-                <a href="./docs/New-Vademecum.pdf" target="_blank"
-                   class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-full hover:shadow-lg transition">
-                    📘 Vademecum
-                </a>
-            </div>
-
-            <!-- Burger mobile -->
-            <div class="md:hidden">
-                <button onclick="toggleMenu()" class="text-gray-700 focus:outline-none text-2xl">
-                    ☰
-                </button>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- Menu mobile -->
-    <div id="mobileMenu" class="hidden md:hidden px-4 pb-4 space-y-3">
-
-        <a href="index.html" class="block text-gray-700 hover:text-blue-600">
-            🏠 Accueil
-        </a>
-
-        <a href="quiz-avance.html" class="block text-gray-700 hover:text-purple-600">
-            🚀 Quiz Avancé
-        </a>
-
-        <a href="quiz-ultime.html" class="block text-gray-700 hover:text-pink-600">
-            🔥 Quiz Ultime
-        </a>
-
-        <a href="./docs/new-vademecum.pdf" target="_blank"
-           class="block bg-green-500 text-white px-4 py-2 rounded-lg text-center">
-            📘 Vademecum
-        </a>
-    </div>
-</nav>
-    <div class="container max-w-5xl mx-auto px-4 py-6">
+<body>
+    <div class="container">
         <!-- Header -->
-        <div class="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-8 mb-6 text-center">
-            <h1 class="text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-3">
-                🎯 Quiz D2WM -> CDA
-            </h1>
-            <p class="text-gray-600 text-lg mb-6">Testez vos compétences pour le titre CDA</p>
-
-            <!-- Stats -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-blue-50 rounded-2xl p-4">
-                    <div class="text-3xl font-bold text-blue-600" id="currentQuestion">0</div>
-                    <div class="text-sm text-gray-600">Question</div>
+        <div class="header">
+            <h1>🎯 Quiz Ultime CDA</h1>
+            <p>50 Questions d'Expertise pour l'Examen Oral - Niveau Expert</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number" id="currentQuestion">0</span>
+                    <span class="stat-label">Question</span>
                 </div>
-                <div class="bg-purple-50 rounded-2xl p-4">
-                    <div class="text-3xl font-bold text-purple-600" id="totalQuestions">75</div>
-                    <div class="text-sm text-gray-600">Total</div>
+                <div class="stat-item">
+                    <span class="stat-number">50</span>
+                    <span class="stat-label">Total</span>
                 </div>
-                <div class="bg-green-50 rounded-2xl p-4">
-                    <div class="text-3xl font-bold text-green-600" id="score">0%</div>
-                    <div class="text-sm text-gray-600">Score</div>
+                <div class="stat-item">
+                    <span class="stat-number" id="score">0</span>
+                    <span class="stat-label">Score</span>
                 </div>
-                <div class="bg-orange-50 rounded-2xl p-4">
-                    <div class="text-3xl font-bold text-orange-600" id="timer">00:00</div>
-                    <div class="text-sm text-gray-600">Temps</div>
+                <div class="stat-item">
+                    <span class="stat-number" id="timer">00:00</span>
+                    <span class="stat-label">Temps</span>
                 </div>
             </div>
-            <div class="bg-yellow-50 rounded-2xl p-4">
-                <div id="levelBadge" class="text-xl font-bold text-yellow-600">🥉 Débutant</div>
-                <div class="text-sm text-gray-600">Niveau</div>
-            </div>
-            <div id="motivationMessage" class="text-lg text-gray-600 mt-4"></div>
         </div>
 
         <!-- Start Screen -->
-        <div id="startScreen" class="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-10 text-center">
-            <h2 class="text-3xl font-bold text-gray-800 mb-4">🚀 Prêt pour le défi ?</h2>
-            <p class="text-gray-600 text-lg mb-6">Ce quiz couvre les <strong>8 compétences CDA</strong> avec 75 questions optimisées</p>
-
-            <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-2xl p-6 mb-6 border-l-4 border-blue-500">
-                <h3 class="text-xl font-bold text-blue-900 mb-3">📚 Compétences couvertes :</h3>
-                <ul class="text-left text-blue-800 space-y-2 max-w-2xl mx-auto">
-                    <li><span class="font-semibold">C1</span> - Installer et configurer son environnement de travail</li>
-                    <li><span class="font-semibold">C2</span> - Maquetter des interfaces utilisateur web ou web mobile</li>
-                    <li><span class="font-semibold">C3</span> - Réaliser des interfaces utilisateur statiques web ou web mobile</li>
-                    <li><span class="font-semibold">C4</span> - Développer la partie dynamique des interfaces utilisateur</li>
-                    <li><span class="font-semibold">C5</span> - Mettre en place une base de données relationnelle</li>
-                    <li><span class="font-semibold">C6</span> - Développer des composants d'accès aux données</li>
-                    <li><span class="font-semibold">C7</span> - Développer des composants métier côté serveur</li>
-                    <li><span class="font-semibold">C8</span> - Documenter le déploiement d'une application dynamique</li>
+        <div class="start-screen" id="startScreen">
+            <h2>🚀 Prêt pour le défi ultime ?</h2>
+            <p>Ce quiz contient <strong>50 questions pointues</strong> couvrant l'ensemble du programme CDA.</p>
+            <div style="background: #fff3cd; padding: 20px; border-radius: 10px; border-left: 4px solid #ffc107; margin: 20px 0;">
+                <h3 style="color: #856404; margin-bottom: 10px;">⚠️ Attention - Niveau Expert</h3>
+                <ul style="color: #856404; text-align: left; margin-left: 20px;">
+                    <li><strong>Les mauvaises réponses sont très proches des bonnes</strong></li>
+                    <li>Lisez attentivement chaque proposition</li>
+                    <li>Les pièges sont nombreux (chiffres, concepts similaires)</li>
+                    <li>Une seule bonne réponse par question</li>
+                    <li>Temps recommandé : 90 minutes</li>
                 </ul>
             </div>
-
-            <button aria-label="Commencer le quiz" tabindex="0" onclick="startQuiz()" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-10 py-4 rounded-full text-xl font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300">
-                Commencer le Quiz 🎓
-            </button>
-            
+            <p><strong>Catégories couvertes :</strong></p>
+            <ul>
+                <li>🌐 Architecture Web & HTTP</li>
+                <li>🔒 Sécurité (OWASP Top 10 2021)</li>
+                <li>🗄️ Bases de données SQL/NoSQL</li>
+                <li>🏗️ Architecture & Patterns (MVC, Microservices, SOLID)</li>
+                <li>🧪 Tests & Qualité (TDD, CI/CD)</li>
+                <li>📋 Méthodologies (Agile, Scrum, MVP)</li>
+                <li>💻 Technologies 2024 (Angular 20, Node.js 24, PHP 8.4, Symfony 7)</li>
+                <li>🚀 Concepts Avancés (WebSockets, PWA, OAuth, Docker)</li>
+            </ul>
+            <button class="btn-start" onclick="startQuiz()">Commencer le Quiz</button>
         </div>
 
         <!-- Quiz Card -->
-        <div id="quizCard" class="hidden bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-8">
-            <div class="flex justify-between items-center mb-6 pb-4 border-b-2 border-gray-200">
-                <span id="questionNumber" class="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-bold">Question 1</span>
-                <span id="competence" class="bg-purple-500 text-white px-4 py-2 rounded-full text-sm font-bold">C1</span>
-                <span id="category" class="bg-green-500 text-white px-4 py-2 rounded-full text-xs font-bold">Catégorie</span>
+        <div class="quiz-card" id="quizCard">
+            <div class="question-header">
+                <span class="question-number" id="questionNumber">Question 1</span>
+                <span class="question-category" id="questionCategory">Catégorie</span>
+                <span class="difficulty" id="difficulty">Expert</span>
             </div>
 
-            <!-- Progress Bar -->
-            <div class="w-full bg-gray-200 rounded-full h-2 mb-6">
-                <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
             </div>
 
-            <div id="questionText" class="text-2xl text-gray-800 font-medium mb-8 leading-relaxed"></div>
+            <div class="question-text" id="questionText">Question text here...</div>
 
-            <ul id="optionsList" class="space-y-3 mb-8"></ul>
+            <ul class="options-list" id="optionsList">
+                <!-- Options will be generated here -->
+            </ul>
 
-            <div id="explanation" class="hidden bg-blue-50 border-l-4 border-blue-500 p-6 rounded-lg mb-6">
-                <h4 class="text-blue-800 font-bold mb-2">💡 Explication</h4>
-                <p id="explanationText" class="text-gray-700"></p>
+            <div class="explanation" id="explanation">
+                <h4>💡 Explication</h4>
+                <p id="explanationText">Explication de la réponse...</p>
             </div>
 
-            <!-- Navigation -->
-            <div class="flex justify-between items-center gap-4">
-                <button onclick="previousQuestion()" id="prevBtn" class="bg-gray-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-gray-600 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+            <div class="navigation">
+                <button class="nav-btn btn-prev" id="prevBtn" onclick="previousQuestion()">
                     ← Précédent
                 </button>
-                <button onclick="nextQuestion()" id="nextBtn" class="bg-blue-500 text-white px-6 py-3 rounded-full font-semibold hover:bg-blue-600 transition-all">
+                <button class="nav-btn btn-next" id="nextBtn" onclick="nextQuestion()">
                     Suivant →
                 </button>
-                <button onclick="submitQuiz()" id="submitBtn" class="hidden bg-green-500 text-white px-8 py-3 rounded-full font-semibold hover:bg-green-600 transition-all">
-                    Terminer ✓
+                <button class="nav-btn btn-submit" id="submitBtn" onclick="submitQuiz()" style="display: none">
+                    Terminer
                 </button>
             </div>
         </div>
 
-        <!-- Results -->
-        <div id="resultsCard" class="hidden bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl p-10 text-center">
-            <h2 class="text-3xl font-bold text-gray-800 mb-6">🎉 Quiz terminé !</h2>
-
-            <div id="scoreCircle" class="w-48 h-48 mx-auto mb-6 rounded-full flex items-center justify-center text-5xl font-bold text-white shadow-2xl">
+        <!-- Results Card -->
+        <div class="results-card" id="resultsCard">
+            <h2>🎉 Quiz terminé !</h2>
+            <div class="score-circle" id="scoreCircle">
                 <span id="finalScore">0%</span>
             </div>
+            <div class="score-text" id="scoreText">Résultat</div>
 
-            <div id="scoreText" class="text-xl text-gray-700 mb-8"></div>
+            <div class="category-breakdown" id="categoryBreakdown">
+                <!-- Category breakdown will be generated here -->
+            </div>
 
-            <div id="categoryBreakdown" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8"></div>
-
-            <button onclick="restartQuiz()" class="bg-gradient-to-r from-red-500 to-pink-600 text-white px-10 py-4 rounded-full text-xl font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300">
-                Recommencer 🔄
+            <button class="btn-restart" onclick="restartQuiz()">
+                Recommencer le Quiz
             </button>
         </div>
     </div>
-    <footer class="text-center text-white/70 mt-6 text-sm">
-        Projet pédagogique • ENI École Informatique • D2WM → CDA
-    </footer>
-    <script src="./js/quizz-cda.js"></script>
-    <script src="./js/script.js"></script>
+
+    <script>
+        // Questions du Quiz Ultime - 50 questions expertes
+        const quizData = [
+            // SECTION: Architecture Web & HTTP (5 questions)
+            {
+                category: "Architecture Web",
+                difficulty: "hard",
+                question: "Dans une architecture client-serveur moderne, quel est le rôle principal du CDN (Content Delivery Network) ?",
+                options: [
+                    "Chiffrer les communications entre le client et le serveur",
+                    "Distribuer le contenu statique depuis des serveurs géographiquement proches des utilisateurs",
+                    "Gérer les sessions utilisateur et l'authentification",
+                    "Exécuter la logique métier côté serveur pour réduire la charge"
+                ],
+                correct: 1,
+                explanation: "Le CDN distribue le contenu statique (images, CSS, JS) depuis des serveurs edge géographiquement proches des utilisateurs, réduisant la latence et améliorant les performances. Le chiffrement est géré par HTTPS, les sessions par le serveur d'application."
+            },
+            {
+                category: "Architecture Web",
+                difficulty: "hard",
+                question: "Quelle affirmation est correcte concernant HTTP/2 par rapport à HTTP/1.1 ?",
+                options: [
+                    "HTTP/2 utilise plusieurs connexions TCP pour paralléliser les requêtes",
+                    "HTTP/2 multiplex plusieurs requêtes sur une seule connexion TCP",
+                    "HTTP/2 nécessite obligatoirement HTTPS contrairement à HTTP/1.1",
+                    "HTTP/2 utilise le format XML au lieu de texte brut"
+                ],
+                correct: 1,
+                explanation: "HTTP/2 multiplex plusieurs requêtes et réponses sur une seule connexion TCP, contrairement à HTTP/1.1 qui nécessite plusieurs connexions. HTTP/2 ne nécessite pas obligatoirement HTTPS (mais en pratique, les navigateurs l'imposent). Le format reste binaire, pas XML."
+            },
+            {
+                category: "Architecture Web",
+                difficulty: "medium",
+                question: "Quelle est la différence entre le viewport meta tag et les media queries CSS ?",
+                options: [
+                    "Le viewport contrôle le zoom initial, les media queries adaptent le style selon la taille d'écran",
+                    "Le viewport définit les breakpoints, les media queries appliquent les styles",
+                    "Le viewport fonctionne uniquement sur mobile, les media queries sur desktop",
+                    "Le viewport est obsolète avec CSS moderne, les media queries le remplacent"
+                ],
+                correct: 0,
+                explanation: "Le viewport meta tag (<meta name='viewport'>) contrôle le zoom initial et la largeur de la zone d'affichage sur mobile. Les media queries CSS (@media) appliquent des styles conditionnels selon les caractéristiques de l'écran (taille, orientation, résolution)."
+            },
+            {
+                category: "Architecture Web",
+                difficulty: "hard",
+                question: "Quel est le temps de chargement cible pour le LCP (Largest Contentful Paint) selon les Core Web Vitals ?",
+                options: [
+                    "Moins de 1.8 secondes",
+                    "Moins de 2.5 secondes",
+                    "Moins de 3.0 secondes",
+                    "Moins de 4.0 secondes"
+                ],
+                correct: 1,
+                explanation: "Le LCP (Largest Contentful Paint) doit être inférieur à 2.5 secondes pour être considéré comme 'bon' selon les Core Web Vitals de Google. Le FCP (First Contentful Paint) doit être < 1.8s, et le FID (First Input Delay) < 100ms."
+            },
+            {
+                category: "Architecture Web",
+                difficulty: "medium",
+                question: "Quelle directive WCAG 2.1 définit le ratio de contraste minimum pour du texte normal ?",
+                options: [
+                    "3:1 pour le niveau AA",
+                    "4.5:1 pour le niveau AA",
+                    "7:1 pour le niveau AA",
+                    "21:1 pour le niveau AAA"
+                ],
+                correct: 1,
+                explanation: "WCAG 2.1 niveau AA requiert un ratio de contraste minimum de 4.5:1 pour le texte normal et 3:1 pour le texte large (18pt+ ou 14pt+ en gras). Le niveau AAA requiert 7:1 et 4.5:1 respectivement."
+            },
+
+            // SECTION: Sécurité (10 questions)
+            {
+                category: "Sécurité",
+                difficulty: "hard",
+                question: "Quelle est la première vulnérabilité du Top 10 OWASP 2021 ?",
+                options: [
+                    "Injection (SQL, NoSQL, OS)",
+                    "Broken Access Control",
+                    "Cryptographic Failures",
+                    "Cross-Site Scripting (XSS)"
+                ],
+                correct: 1,
+                explanation: "Broken Access Control est #1 dans OWASP Top 10 2021 (montée depuis #5 en 2017). L'injection est descendue à la #3. Attention piège : l'injection est souvent la plus dangereuse en pratique, mais Broken Access Control est plus fréquente."
+            },
+            {
+                category: "Sécurité",
+                difficulty: "hard",
+                question: "Quel algorithme de hachage est recommandé par l'OWASP en 2024 pour stocker les mots de passe ?",
+                options: [
+                    "SHA-256 avec salt aléatoire",
+                    "bcrypt avec facteur de coût 10",
+                    "Argon2id avec paramètres adaptés",
+                    "PBKDF2-SHA512 avec 100 000 itérations"
+                ],
+                correct: 2,
+                explanation: "Argon2id (Winner Password Hashing Competition 2015) est le meilleur choix en 2024 : résistant aux attaques GPU/ASIC, paramétrable (mémoire + temps). bcrypt (facteur 12 en 2024, pas 10) est également excellent. SHA-256 seul est insuffisant (trop rapide), PBKDF2 est acceptable mais moins robuste."
+            },
+            {
+                category: "Sécurité",
+                difficulty: "hard",
+                question: "Quelle directive CSP (Content Security Policy) bloque l'exécution de scripts inline ?",
+                options: [
+                    "script-src 'none'",
+                    "script-src 'self'",
+                    "default-src 'self'",
+                    "script-src 'unsafe-inline'"
+                ],
+                correct: 1,
+                explanation: "script-src 'self' autorise uniquement les scripts du même domaine, bloquant les scripts inline (<script>) et eval(). 'none' bloquerait tous les scripts, 'unsafe-inline' autoriserait les scripts inline (dangereux), default-src s'applique à toutes les ressources si non spécifié."
+            },
+            {
+                category: "Sécurité",
+                difficulty: "medium",
+                question: "Quel est le temps de hachage cible pour un mot de passe avec bcrypt ou Argon2 ?",
+                options: [
+                    "10-50 millisecondes",
+                    "100-200 millisecondes",
+                    "250-500 millisecondes",
+                    "1-2 secondes"
+                ],
+                correct: 2,
+                explanation: "Le temps de hachage cible est de 250-500ms pour trouver le bon équilibre entre sécurité (ralentir les attaques brute-force) et expérience utilisateur. Ajuster le facteur de coût (bcrypt) ou les paramètres mémoire/temps (Argon2) selon la puissance serveur."
+            },
+            {
+                category: "Sécurité",
+                difficulty: "hard",
+                question: "Quelle valeur SameSite Cookie offre la meilleure protection CSRF tout en permettant la navigation normale ?",
+                options: [
+                    "SameSite=None; Secure",
+                    "SameSite=Lax",
+                    "SameSite=Strict",
+                    "SameSite n'est pas nécessaire avec tokens CSRF"
+                ],
+                correct: 1,
+                explanation: "SameSite=Lax (défaut moderne) offre le meilleur équilibre : bloque les requêtes cross-site POST/PUT/DELETE mais autorise GET top-level (liens cliqués). Strict bloque même les liens cliqués (trop restrictif). None+Secure autorise tout cross-site (peu sûr). Les tokens CSRF restent recommandés en complément."
+            },
+            {
+                category: "Sécurité",
+                difficulty: "hard",
+                question: "Quelle technique est la PLUS efficace pour prévenir les injections SQL ?",
+                options: [
+                    "Valider les entrées utilisateur avec des regex",
+                    "Échapper les caractères spéciaux avec addslashes()",
+                    "Utiliser des requêtes préparées (Prepared Statements)",
+                    "Utiliser un ORM comme Doctrine ou Eloquent"
+                ],
+                correct: 2,
+                explanation: "Les requêtes préparées sont la protection la PLUS efficace : elles séparent structurellement le code SQL des données, rendant l'injection impossible. Les ORM utilisent généralement des requêtes préparées (donc efficaces aussi). La validation et l'échappement sont des couches supplémentaires mais insuffisantes seules (bypass possibles)."
+            },
+            {
+                category: "Sécurité",
+                difficulty: "medium",
+                question: "Quel attribut de cookie empêche JavaScript d'y accéder via document.cookie ?",
+                options: [
+                    "Secure",
+                    "HttpOnly",
+                    "SameSite",
+                    "Domain"
+                ],
+                correct: 1,
+                explanation: "HttpOnly empêche l'accès au cookie via JavaScript (document.cookie), protégeant contre le vol de session en cas de XSS. Secure force HTTPS. SameSite protège contre CSRF. Domain définit le domaine autorisé."
+            },
+            {
+                category: "Sécurité",
+                difficulty: "hard",
+                question: "Quelle est la différence entre Stored XSS et Reflected XSS ?",
+                options: [
+                    "Stored XSS est stocké en base de données, Reflected XSS dans l'URL",
+                    "Stored XSS affecte tous les utilisateurs, Reflected XSS uniquement la victime qui clique",
+                    "Stored XSS utilise JavaScript, Reflected XSS utilise HTML",
+                    "Les deux sont identiques, seul le nom change"
+                ],
+                correct: 1,
+                explanation: "Stored XSS (persistant) : le script malveillant est stocké en BDD et exécuté pour tous les visiteurs (plus dangereux). Reflected XSS (non-persistant) : le script est dans l'URL/requête et renvoyé par le serveur, affectant uniquement celui qui clique sur le lien malveillant."
+            },
+            {
+                category: "Sécurité",
+                difficulty: "hard",
+                question: "Combien de caractères minimum recommande l'ANSSI (2024) pour un mot de passe SANS authentification multi-facteurs ?",
+                options: [
+                    "8 caractères",
+                    "10 caractères",
+                    "12 caractères",
+                    "16 caractères"
+                ],
+                correct: 2,
+                explanation: "L'ANSSI recommande 12 caractères minimum sans MFA (8 caractères si MFA activée). Le mot de passe doit mêler majuscules, minuscules, chiffres et symboles. Rotation uniquement si compromission suspectée."
+            },
+            {
+                category: "Sécurité",
+                difficulty: "medium",
+                question: "Quelle couche de la défense en profondeur protège contre les patterns d'attaque connus au niveau applicatif ?",
+                options: [
+                    "Pare-feu réseau (Firewall)",
+                    "WAF (Web Application Firewall)",
+                    "IDS/IPS (Intrusion Detection/Prevention System)",
+                    "Antivirus/EDR (Endpoint Detection Response)"
+                ],
+                correct: 1,
+                explanation: "Le WAF (Web Application Firewall) protège au niveau applicatif (couche 7 OSI) contre les patterns d'attaque connus (SQL injection, XSS, etc.). Le firewall réseau protège couche 3-4, l'IDS/IPS surveille le trafic réseau, l'antivirus/EDR protège les endpoints."
+            },
+
+            // SECTION: Bases de données (8 questions)
+            {
+                category: "Bases de données",
+                difficulty: "hard",
+                question: "Quelle est la différence principale entre LEFT JOIN et RIGHT JOIN en SQL ?",
+                options: [
+                    "LEFT JOIN est plus rapide que RIGHT JOIN",
+                    "LEFT JOIN retourne toutes les lignes de la table de gauche, RIGHT JOIN de la table de droite",
+                    "LEFT JOIN permet les NULL, RIGHT JOIN ne les permet pas",
+                    "Il n'y a aucune différence, c'est juste une question de préférence syntaxique"
+                ],
+                correct: 1,
+                explanation: "LEFT JOIN retourne TOUTES les lignes de la table de gauche + correspondances de droite (NULL si pas de correspondance). RIGHT JOIN fait l'inverse. En pratique, RIGHT JOIN est rarement utilisé (on inverse les tables et utilise LEFT JOIN). Performances équivalentes."
+            },
+            {
+                category: "Bases de données",
+                difficulty: "hard",
+                question: "Quel est le piège fréquent concernant INNER JOIN en SQL ?",
+                options: [
+                    "INNER JOIN est plus lent que LEFT JOIN",
+                    "INNER JOIN et JOIN sont strictement équivalents",
+                    "INNER JOIN nécessite toujours une clause WHERE",
+                    "INNER JOIN ne fonctionne qu'avec des clés primaires"
+                ],
+                correct: 1,
+                explanation: "⚠️ PIÈGE FRÉQUENT : INNER JOIN = JOIN (strictement équivalents). Beaucoup pensent qu'il y a une différence. INNER JOIN est généralement plus rapide que LEFT JOIN car il retourne moins de données. Pas de WHERE obligatoire, fonctionne avec n'importe quelle colonne."
+            },
+            {
+                category: "Bases de données",
+                difficulty: "medium",
+                question: "Dans la normalisation 3NF, qu'est-ce qu'une dépendance transitive ?",
+                options: [
+                    "Quand une colonne dépend de la clé primaire",
+                    "Quand une colonne non-clé dépend d'une autre colonne non-clé",
+                    "Quand deux tables sont liées par une clé étrangère",
+                    "Quand une colonne contient plusieurs valeurs"
+                ],
+                correct: 1,
+                explanation: "Une dépendance transitive en 3NF : attribut non-clé A → attribut non-clé B → attribut non-clé C. Exemple : employe_id → code_postal → ville (ville dépend de code_postal qui n'est pas la clé primaire). Il faut séparer en deux tables pour atteindre 3NF."
+            },
+            {
+                category: "Bases de données",
+                difficulty: "hard",
+                question: "Quelle est la principale différence entre SQL et NoSQL concernant la scalabilité ?",
+                options: [
+                    "SQL est plus scalable que NoSQL",
+                    "SQL scale verticalement, NoSQL horizontalement",
+                    "SQL ne peut pas scaler au-delà de 1TB, NoSQL oui",
+                    "NoSQL ne supporte pas les transactions, contrairement à SQL"
+                ],
+                correct: 1,
+                explanation: "SQL (relationnel) scale principalement verticalement (serveur plus puissant = plus de CPU/RAM). NoSQL scale horizontalement (ajouter plus de serveurs). NoSQL supporte les transactions (avec limitations selon BASE vs ACID). Les deux peuvent gérer des volumes massifs avec les bonnes stratégies."
+            },
+            {
+                category: "Bases de données",
+                difficulty: "hard",
+                question: "Quelle est la différence fondamentale entre MLD et MPD ?",
+                options: [
+                    "MLD est conceptuel, MPD est logique",
+                    "MLD définit les tables et relations, MPD ajoute les types de données et contraintes SQL",
+                    "MLD est pour MySQL, MPD pour PostgreSQL",
+                    "MLD inclut les index, MPD non"
+                ],
+                correct: 1,
+                explanation: "⚠️ PIÈGE FRÉQUENT : MLD (Modèle Logique) = structure logique (tables, PK/FK) sans détails techniques. MPD (Modèle Physique) = implémentation SQL concrète (VARCHAR(255), INT, INDEX, CHECK, DEFAULT, etc.). MCD est conceptuel (métier). Les index sont dans le MPD, pas le MLD."
+            },
+            {
+                category: "Bases de données",
+                difficulty: "medium",
+                question: "Quel type de base NoSQL convient le mieux pour un réseau social (graphe de relations) ?",
+                options: [
+                    "Document (MongoDB)",
+                    "Clé-Valeur (Redis)",
+                    "Colonne (Cassandra)",
+                    "Graphe (Neo4j)"
+                ],
+                correct: 3,
+                explanation: "Les bases de données graphe (Neo4j, ArangoDB) sont optimisées pour gérer les relations complexes (amis, followers, recommandations). Elles utilisent le langage Cypher pour requêter les nœuds et relations efficacement. MongoDB convient aux documents, Redis au cache, Cassandra aux données massives write-heavy."
+            },
+            {
+                category: "Bases de données",
+                difficulty: "hard",
+                question: "Quelle commande EXPLAIN indique qu'une requête SQL fait un full table scan ?",
+                options: [
+                    "type: index",
+                    "type: ref",
+                    "type: ALL",
+                    "type: const"
+                ],
+                correct: 2,
+                explanation: "EXPLAIN type: ALL indique un full table scan (mauvais, examine toutes les lignes). type: index = index scan (correct). type: ref = utilise index (bon). type: const = clé primaire/unique (optimal). Ajouter index si type=ALL sur tables volumineuses."
+            },
+            {
+                category: "Bases de données",
+                difficulty: "medium",
+                question: "À partir de combien de lignes le partitioning devient-il pertinent ?",
+                options: [
+                    "1 million de lignes",
+                    "10 millions de lignes",
+                    "100 millions de lignes",
+                    "1 milliard de lignes"
+                ],
+                correct: 2,
+                explanation: "Le partitioning (partitionnement) devient pertinent à partir de ~100 millions de lignes. Il divise une grande table en partitions plus petites (par date, région, etc.), améliorant les performances des requêtes (partition pruning) et facilitant la maintenance (purge ancienne partition)."
+            },
+
+            // SECTION: Architecture & Patterns (7 questions)
+            {
+                category: "Architecture",
+                difficulty: "medium",
+                question: "Dans le pattern MVC, quelle affirmation est FAUSSE ?",
+                options: [
+                    "Le Model contient la logique métier et accède à la base de données",
+                    "La View peut contenir de la logique de présentation simple (filtres, formatage)",
+                    "Le Controller doit contenir la validation des données métier",
+                    "Le Model notifie la View des changements (Observer pattern)"
+                ],
+                correct: 2,
+                explanation: "FAUX : La validation métier doit être dans le Model, pas le Controller. Le Controller est un chef d'orchestre (reçoit requête, appelle Model, sélectionne View). Les 3 autres affirmations sont vraies. La View peut avoir de la logique de présentation (pas métier)."
+            },
+            {
+                category: "Architecture",
+                difficulty: "hard",
+                question: "Quel est l'inconvénient majeur des microservices par rapport au monolithe ?",
+                options: [
+                    "Les microservices sont plus lents que le monolithe",
+                    "Les microservices coûtent plus cher en infrastructure",
+                    "La consistance des données est plus difficile (eventual consistency)",
+                    "Les microservices ne permettent pas de scaler indépendamment"
+                ],
+                correct: 2,
+                explanation: "Le défi majeur : consistance des données. Pas de transactions ACID cross-services (bases distribuées), nécessite eventual consistency et Saga pattern. Les microservices permettent bien de scaler indépendamment (avantage). Les performances dépendent de l'architecture. Le coût infrastructure est plus élevé (mais compensé par la scalabilité)."
+            },
+            {
+                category: "Architecture",
+                difficulty: "hard",
+                question: "Quel principe SOLID est violé quand une classe Robot implémente une interface Worker avec une méthode eat() ?",
+                options: [
+                    "Single Responsibility",
+                    "Open/Closed",
+                    "Liskov Substitution",
+                    "Interface Segregation"
+                ],
+                correct: 3,
+                explanation: "Interface Segregation Principle violé : ne pas forcer une classe à implémenter des méthodes qu'elle n'utilise pas. Robot ne mange pas, donc eat() n'a pas de sens. Solution : interfaces spécifiques (Workable, Eatable, Sleepable)."
+            },
+            {
+                category: "Architecture",
+                difficulty: "hard",
+                question: "Dans l'architecture hexagonale, où doit se trouver la logique métier ?",
+                options: [
+                    "Dans les adaptateurs primaires (Controllers)",
+                    "Dans les adaptateurs secondaires (Repositories)",
+                    "Dans le domaine (hexagone central)",
+                    "Dans les ports (interfaces)"
+                ],
+                correct: 2,
+                explanation: "La logique métier doit être dans le domaine (hexagone central), totalement indépendante des détails techniques (BDD, framework, UI). Les adaptateurs primaires pilotent l'app, les adaptateurs secondaires implémentent les ports (interfaces), les ports définissent les contrats."
+            },
+            {
+                category: "Architecture",
+                difficulty: "medium",
+                question: "Quel pattern microservices permet de gérer la défaillance d'un service ?",
+                options: [
+                    "API Gateway",
+                    "Service Discovery",
+                    "Circuit Breaker",
+                    "Event Sourcing"
+                ],
+                correct: 2,
+                explanation: "Circuit Breaker détecte les défaillances d'un service et coupe temporairement les appels (évite cascade de pannes), avec fallback. API Gateway route les requêtes, Service Discovery localise les instances, Event Sourcing stocke les événements."
+            },
+            {
+                category: "Architecture",
+                difficulty: "medium",
+                question: "Quelle variante de MVC utilise le data-binding bidirectionnel ?",
+                options: [
+                    "MVP (Model-View-Presenter)",
+                    "MVVM (Model-View-ViewModel)",
+                    "MVT (Model-View-Template)",
+                    "MVC classique"
+                ],
+                correct: 1,
+                explanation: "MVVM (Model-View-ViewModel) utilise le data-binding bidirectionnel : changements dans la View se reflètent automatiquement dans le ViewModel et vice-versa. Utilisé par Angular. MVP a un Presenter qui contrôle la View. MVT est la variante Django."
+            },
+            {
+                category: "Architecture",
+                difficulty: "hard",
+                question: "Quel est le principe du 'D' dans SOLID (Dependency Inversion) ?",
+                options: [
+                    "Les classes de haut niveau dépendent des classes de bas niveau",
+                    "Les deux doivent dépendre d'abstractions (interfaces), pas d'implémentations",
+                    "Les dépendances doivent être injectées par constructeur uniquement",
+                    "Les classes ne doivent avoir aucune dépendance"
+                ],
+                correct: 1,
+                explanation: "Dependency Inversion : modules haut et bas niveau dépendent d'abstractions (interfaces), pas d'implémentations concrètes. Les abstractions ne dépendent pas des détails. Permet injection de dépendances (par constructeur, setter, ou autre) et testabilité."
+            },
+
+            // SECTION: Tests & Qualité (5 questions)
+            {
+                category: "Tests",
+                difficulty: "medium",
+                question: "Quelle est la répartition idéale dans la pyramide des tests ?",
+                options: [
+                    "50% unitaires, 30% intégration, 20% E2E",
+                    "70-80% unitaires, 15-20% intégration, 5-10% E2E",
+                    "30% unitaires, 40% intégration, 30% E2E",
+                    "90% E2E, 10% unitaires"
+                ],
+                correct: 1,
+                explanation: "Pyramide des tests idéale : 70-80% tests unitaires (rapides, nombreux), 15-20% tests d'intégration (moyennement rapides), 5-10% tests E2E (lents, coûteux). Cette répartition optimise vitesse, coût et couverture."
+            },
+            {
+                category: "Tests",
+                difficulty: "hard",
+                question: "Dans le cycle TDD Red-Green-Refactor, que signifie 'Green' ?",
+                options: [
+                    "Écrire un test qui passe immédiatement",
+                    "Écrire le code MINIMAL pour faire passer le test",
+                    "Optimiser le code et améliorer le design",
+                    "Valider que tous les tests passent avant de commiter"
+                ],
+                correct: 1,
+                explanation: "Green = écrire le code MINIMAL pour faire passer le test (même si c'est du code 'stupide' qui retourne une valeur en dur). Red = test qui échoue. Refactor = améliorer le code sans casser les tests. Le but de Green est de passer le test au plus vite."
+            },
+            {
+                category: "Tests",
+                difficulty: "medium",
+                question: "Quelle est la différence entre CI (Continuous Integration) et CD (Continuous Deployment) ?",
+                options: [
+                    "CI compile le code, CD le déploie",
+                    "CI valide le code automatiquement, CD déploie automatiquement en production",
+                    "CI est pour le backend, CD pour le frontend",
+                    "Il n'y a pas de différence, c'est la même chose"
+                ],
+                correct: 1,
+                explanation: "CI (Continuous Integration) : intégration fréquente avec validation automatique (build + tests) à chaque commit. CD (Continuous Deployment) : déploiement automatique en PRODUCTION après validation. Continuous Delivery = déploiement automatisé en staging, production manuelle."
+            },
+            {
+                category: "Tests",
+                difficulty: "hard",
+                question: "Quel temps maximum recommande-t-on pour un pipeline CI ?",
+                options: [
+                    "5 minutes",
+                    "10 minutes",
+                    "20 minutes",
+                    "30 minutes"
+                ],
+                correct: 1,
+                explanation: "Pipeline CI < 10 minutes recommandé pour feedback rapide. Au-delà, les développeurs changent de contexte et perdent en productivité. Si trop long : paralléliser les tests, optimiser les builds, utiliser du cache intelligent."
+            },
+            {
+                category: "Tests",
+                difficulty: "medium",
+                question: "Que teste le Contract Testing (ex: Pact) ?",
+                options: [
+                    "La logique métier des services",
+                    "Le respect du contrat entre consommateur et producteur d'API",
+                    "Les performances de l'API sous charge",
+                    "La sécurité des endpoints"
+                ],
+                correct: 1,
+                explanation: "Contract Testing (Pact, Spring Cloud Contract) vérifie que l'API respecte son contrat (format, schéma) entre consommateur (frontend) et producteur (backend). Permet de détecter les breaking changes avant déploiement. Consumer-Driven : le consommateur définit le contrat."
+            },
+
+            // SECTION: Méthodologies (5 questions)
+            {
+                category: "Méthodologies",
+                difficulty: "medium",
+                question: "Quelle est la principale différence entre Agile et Waterfall ?",
+                options: [
+                    "Agile coûte moins cher que Waterfall",
+                    "Agile est itératif avec feedback continu, Waterfall est séquentiel",
+                    "Agile ne nécessite pas de documentation",
+                    "Waterfall est plus moderne qu'Agile"
+                ],
+                correct: 1,
+                explanation: "Agile = itératif (sprints 2-4 semaines) avec feedback continu et adaptation. Waterfall = séquentiel (Exigences → Conception → Dev → Tests) avec planning fixe au début. Agile nécessite de la documentation (juste nécessaire, pas excessive). Agile n'est pas forcément moins cher, mais réduit les risques."
+            },
+            {
+                category: "Méthodologies",
+                difficulty: "hard",
+                question: "Dans Scrum, combien de temps dure un Sprint Planning pour un sprint de 2 semaines ?",
+                options: [
+                    "2 heures",
+                    "3 heures",
+                    "4 heures",
+                    "8 heures"
+                ],
+                correct: 2,
+                explanation: "Sprint Planning = 4 heures MAX pour sprint 2 semaines (2h par semaine de sprint). Partie 1 (2h) : QUOI (sélection User Stories, Sprint Goal). Partie 2 (2h) : COMMENT (découpage en tâches techniques). Daily Scrum = 15min, Sprint Review = 2h, Sprint Retrospective = 1h30."
+            },
+            {
+                category: "Méthodologies",
+                difficulty: "medium",
+                question: "Quel rôle Scrum gère le Product Backlog et définit les priorités ?",
+                options: [
+                    "Scrum Master",
+                    "Product Owner",
+                    "Development Team",
+                    "Stakeholders"
+                ],
+                correct: 1,
+                explanation: "Product Owner (PO) : gère le Product Backlog (priorisation), définit la vision produit, accepte/rejette le travail. Scrum Master : facilite les cérémonies, supprime obstacles. Development Team : auto-organisée, développe le produit. Stakeholders : donnent feedback lors Sprint Review."
+            },
+            {
+                category: "Méthodologies",
+                difficulty: "hard",
+                question: "Quelle est la durée de développement maximale recommandée pour un MVP ?",
+                options: [
+                    "2-4 semaines",
+                    "6-12 semaines",
+                    "6 mois",
+                    "1 an"
+                ],
+                correct: 1,
+                explanation: "MVP = 6-12 semaines MAX de développement pour valider rapidement les hypothèses. Au-delà, risque de sur-développement (trop de fonctionnalités = pas minimum). L'objectif du MVP est d'apprendre vite avec le minimum de ressources."
+            },
+            {
+                category: "Méthodologies",
+                difficulty: "medium",
+                question: "Que signifie l'acronyme AARRR (Pirate Metrics) pour mesurer un MVP ?",
+                options: [
+                    "Agile, Adaptive, Reliable, Responsive, Robust",
+                    "Acquisition, Activation, Retention, Referral, Revenue",
+                    "Analyze, Anticipate, React, Review, Release",
+                    "Accept, Approve, Release, Review, Repeat"
+                ],
+                correct: 1,
+                explanation: "Pirate Metrics (AARRR) : Acquisition (comment les users découvrent), Activation (première expérience positive), Retention (reviennent-ils ?), Referral (recommandent-ils ?), Revenue (paient-ils ?). Mesures essentielles pour valider un MVP."
+            },
+
+            // SECTION: Technologies 2024 (5 questions)
+            {
+                category: "Technologies",
+                difficulty: "hard",
+                question: "Quelle fonctionnalité majeure Angular 20 permet de simplifier l'architecture ?",
+                options: [
+                    "Composants standalone (sans NgModule)",
+                    "TypeScript 5.0 obligatoire",
+                    "Suppression de RxJS",
+                    "Support natif de Vue.js"
+                ],
+                correct: 0,
+                explanation: "Composants standalone (depuis Angular 14, généralisés en v20) : plus besoin de NgModule pour déclarer composants. Imports directs dans @Component. TypeScript reste optionnel (mais recommandé). RxJS toujours présent (mais Signals offrent alternative pour état local)."
+            },
+            {
+                category: "Technologies",
+                difficulty: "hard",
+                question: "Quelle nouveauté Node.js 24 améliore l'expérience développeur TypeScript ?",
+                options: [
+                    "Compilation TypeScript 10× plus rapide",
+                    "Support TypeScript natif sans transpilation (fichiers .ts directs)",
+                    "Remplacement de npm par pnpm par défaut",
+                    "Intégration de Deno dans Node.js"
+                ],
+                correct: 1,
+                explanation: "Node.js 24 supporte TypeScript natif avec --experimental-strip-types : exécute directement les fichiers .ts sans transpilation nécessaire (pour développement). Plus besoin de ts-node. La compilation reste nécessaire pour production. npm reste gestionnaire par défaut."
+            },
+            {
+                category: "Technologies",
+                difficulty: "medium",
+                question: "Quelle nouveauté Symfony 7 remplace Webpack Encore ?",
+                options: [
+                    "Vite.js",
+                    "AssetMapper",
+                    "Turbo",
+                    "esbuild"
+                ],
+                correct: 1,
+                explanation: "AssetMapper (Symfony 7) : alternative à Webpack sans build step, gère les assets directement. Importmap browser natif. Plus simple pour projets sans besoin de transpilation complexe. Webpack Encore reste disponible pour besoins avancés."
+            },
+            {
+                category: "Technologies",
+                difficulty: "hard",
+                question: "Quelle version PHP minimum est requise pour Symfony 7 ?",
+                options: [
+                    "PHP 8.0",
+                    "PHP 8.1",
+                    "PHP 8.2",
+                    "PHP 8.4"
+                ],
+                correct: 2,
+                explanation: "Symfony 7 requiert PHP 8.2 minimum (support 8.2, 8.3, 8.4). Utilise les fonctionnalités modernes : attributs, enums, readonly properties, etc. Symfony 7.0 est LTS (Long Term Support) jusqu'en novembre 2028."
+            },
+            {
+                category: "Technologies",
+                difficulty: "medium",
+                question: "Quelle différence entre GitFlow et GitHub Flow ?",
+                options: [
+                    "GitFlow est pour Git, GitHub Flow pour GitHub uniquement",
+                    "GitFlow a 5 types de branches, GitHub Flow seulement main + feature",
+                    "GitFlow est obsolète, GitHub Flow est moderne",
+                    "Il n'y a aucune différence"
+                ],
+                correct: 1,
+                explanation: "GitFlow : complexe avec main, develop, feature/*, release/*, hotfix/* (bon pour releases planifiées). GitHub Flow : simple avec main + feature branches (bon pour déploiement continu). GitFlow n'est pas obsolète, juste plus adapté à certains contextes (versions multiples)."
+            },
+
+            // SECTION: Concepts Avancés (5 questions)
+            {
+                category: "Concepts Avancés",
+                difficulty: "hard",
+                question: "Quelle est la différence entre WebSocket et Server-Sent Events (SSE) ?",
+                options: [
+                    "WebSocket est bidirectionnel, SSE est unidirectionnel (serveur → client)",
+                    "WebSocket utilise HTTP/2, SSE utilise HTTP/1.1",
+                    "SSE est plus rapide que WebSocket",
+                    "WebSocket nécessite HTTPS, SSE non"
+                ],
+                correct: 0,
+                explanation: "WebSocket = bidirectionnel full-duplex (client ↔ serveur) sur connexion persistante. SSE (Server-Sent Events) = unidirectionnel (serveur → client) sur HTTP classique, plus simple pour notifications push. Les deux fonctionnent sur HTTP/1.1 et HTTP/2. HTTPS recommandé pour les deux."
+            },
+            {
+                category: "Concepts Avancés",
+                difficulty: "hard",
+                question: "Quel composant est OBLIGATOIRE pour qu'une application web soit considérée comme PWA ?",
+                options: [
+                    "manifest.json + Service Worker + HTTPS",
+                    "manifest.json uniquement",
+                    "Service Worker uniquement",
+                    "HTTPS + App Shell"
+                ],
+                correct: 0,
+                explanation: "PWA requiert 3 éléments OBLIGATOIRES : manifest.json (métadonnées app), Service Worker (offline, cache), HTTPS (sécurité). L'App Shell est recommandé mais pas obligatoire. Sans ces 3 éléments, ce n'est pas une PWA complète."
+            },
+            {
+                category: "Concepts Avancés",
+                difficulty: "hard",
+                question: "Quelle est la différence entre OAuth 2.0 et OpenID Connect ?",
+                options: [
+                    "OAuth 2.0 est pour l'authentification, OpenID Connect pour l'autorisation",
+                    "OAuth 2.0 est pour l'autorisation (accès ressources), OpenID Connect pour l'authentification (identité)",
+                    "OpenID Connect est obsolète, OAuth 2.0 le remplace",
+                    "Il n'y a pas de différence"
+                ],
+                correct: 1,
+                explanation: "OAuth 2.0 = autorisation (délégation d'accès : 'App X peut accéder à mes photos'). OpenID Connect (OIDC) = authentification (identité : 'Se connecter avec Google'), construit au-dessus d'OAuth 2.0, retourne ID Token (JWT) avec infos utilisateur."
+            },
+            {
+                category: "Concepts Avancés",
+                difficulty: "medium",
+                question: "Quel design pattern est utilisé pour créer différents types de notifications (Email, SMS, Push) ?",
+                options: [
+                    "Singleton",
+                    "Observer",
+                    "Factory",
+                    "Decorator"
+                ],
+                correct: 2,
+                explanation: "Factory Pattern : crée des objets sans spécifier leur classe exacte. NotificationFactory.create('email') retourne EmailNotification, .create('sms') retourne SmsNotification. Singleton = une instance unique. Observer = notification d'événements. Decorator = ajout dynamique de fonctionnalités."
+            },
+            {
+                category: "Concepts Avancés",
+                difficulty: "medium",
+                question: "Quelle est la principale différence entre un conteneur Docker et une VM (machine virtuelle) ?",
+                options: [
+                    "Le conteneur virtualise l'OS complet, la VM uniquement l'application",
+                    "Le conteneur partage le kernel de l'OS hôte, la VM a son propre OS",
+                    "Le conteneur est plus lourd que la VM",
+                    "La VM démarre plus rapidement que le conteneur"
+                ],
+                correct: 1,
+                explanation: "Conteneur Docker : partage le kernel de l'OS hôte, virtualise uniquement l'application et ses dépendances (léger, démarrage rapide <1s). VM : virtualise l'OS complet avec son propre kernel (lourd, démarrage lent ~minutes). Conteneurs plus efficaces pour applications cloud-native."
+            }
+        ];
+
+        // Variables globales
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let startTime = null;
+        let timerInterval = null;
+
+        // Mélanger les questions au chargement
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // Mélanger les options de chaque question
+        function shuffleOptions(question) {
+            const indices = question.options.map((_, i) => i);
+            const shuffledIndices = shuffleArray(indices);
+
+            return {
+                ...question,
+                options: shuffledIndices.map(i => question.options[i]),
+                correct: shuffledIndices.indexOf(question.correct)
+            };
+        }
+
+        // Initialiser le quiz
+        function startQuiz() {
+            // Mélanger les questions
+            const shuffledQuestions = shuffleArray(quizData);
+
+            // Mélanger les options de chaque question
+            window.quizQuestions = shuffledQuestions.map(q => shuffleOptions(q));
+
+            // Initialiser les réponses
+            userAnswers = new Array(window.quizQuestions.length).fill(null);
+
+            // Masquer l'écran de démarrage
+            document.getElementById('startScreen').style.display = 'none';
+            document.getElementById('quizCard').classList.add('active');
+
+            // Démarrer le timer
+            startTime = Date.now();
+            startGlobalTimer();
+
+            // Afficher la première question
+            showQuestion(0);
+        }
+
+        // Afficher une question
+        function showQuestion(index) {
+            if (index < 0 || index >= window.quizQuestions.length) return;
+
+            currentQuestionIndex = index;
+            const question = window.quizQuestions[index];
+
+            // Mettre à jour les statistiques
+            document.getElementById('currentQuestion').textContent = index + 1;
+            document.getElementById('questionNumber').textContent = `Question ${index + 1}`;
+            document.getElementById('questionCategory').textContent = question.category;
+            document.getElementById('difficulty').textContent = question.difficulty === 'hard' ? 'Expert' : question.difficulty === 'medium' ? 'Avancé' : 'Intermédiaire';
+            document.getElementById('difficulty').className = 'difficulty ' + (question.difficulty === 'medium' ? 'medium' : question.difficulty === 'easy' ? 'easy' : '');
+            document.getElementById('questionText').textContent = question.question;
+
+            // Mettre à jour la barre de progression
+            const progress = ((index + 1) / window.quizQuestions.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+
+            // Générer les options
+            const optionsList = document.getElementById('optionsList');
+            optionsList.innerHTML = '';
+
+            question.options.forEach((option, optionIndex) => {
+                const li = document.createElement('li');
+                li.className = 'option-item';
+
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+
+                // Vérifier si l'utilisateur a déjà répondu
+                if (userAnswers[index] === optionIndex) {
+                    button.classList.add('selected');
+                }
+
+                button.addEventListener('click', () => selectOption(optionIndex));
+                li.appendChild(button);
+                optionsList.appendChild(li);
+            });
+
+            // Masquer l'explication
+            document.getElementById('explanation').classList.remove('show');
+
+            // Mettre à jour les boutons de navigation
+            updateNavigationButtons();
+        }
+
+        // Sélectionner une option
+        function selectOption(optionIndex) {
+            // Désélectionner toutes les options
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            // Sélectionner l'option choisie
+            const selectedButton = document.querySelectorAll('.option-btn')[optionIndex];
+            selectedButton.classList.add('selected');
+
+            // Sauvegarder la réponse
+            userAnswers[currentQuestionIndex] = optionIndex;
+
+            // Afficher l'explication
+            showExplanation();
+
+            // Mettre à jour le score
+            updateScore();
+        }
+
+        // Afficher l'explication
+        function showExplanation() {
+            const question = window.quizQuestions[currentQuestionIndex];
+            const explanationDiv = document.getElementById('explanation');
+            const explanationText = document.getElementById('explanationText');
+
+            explanationText.textContent = question.explanation;
+            explanationDiv.classList.add('show');
+
+            // Marquer les bonnes et mauvaises réponses
+            const options = document.querySelectorAll('.option-btn');
+            options.forEach((option, index) => {
+                if (index === question.correct) {
+                    option.classList.add('correct');
+                } else if (index === userAnswers[currentQuestionIndex] && index !== question.correct) {
+                    option.classList.add('incorrect');
+                }
+            });
+        }
+
+        // Mettre à jour le score
+        function updateScore() {
+            let correctAnswers = 0;
+            userAnswers.forEach((answer, index) => {
+                if (answer !== null && answer === window.quizQuestions[index].correct) {
+                    correctAnswers++;
+                }
+            });
+
+            const score = Math.round((correctAnswers / window.quizQuestions.length) * 100);
+            document.getElementById('score').textContent = score;
+        }
+
+        // Navigation
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                showQuestion(currentQuestionIndex - 1);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < window.quizQuestions.length - 1) {
+                showQuestion(currentQuestionIndex + 1);
+            }
+        }
+
+        function updateNavigationButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.style.display = currentQuestionIndex === window.quizQuestions.length - 1 ? 'none' : 'inline-block';
+            submitBtn.style.display = currentQuestionIndex === window.quizQuestions.length - 1 ? 'inline-block' : 'none';
+        }
+
+        // Soumettre le quiz
+        function submitQuiz() {
+            // Arrêter le timer
+            if (timerInterval) clearInterval(timerInterval);
+
+            // Calculer le score final
+            let correctAnswers = 0;
+            const categoryScores = {};
+
+            userAnswers.forEach((answer, index) => {
+                const question = window.quizQuestions[index];
+                const category = question.category;
+
+                if (!categoryScores[category]) {
+                    categoryScores[category] = { correct: 0, total: 0 };
+                }
+
+                categoryScores[category].total++;
+
+                if (answer !== null && answer === question.correct) {
+                    correctAnswers++;
+                    categoryScores[category].correct++;
+                }
+            });
+
+            const finalScore = Math.round((correctAnswers / window.quizQuestions.length) * 100);
+
+            // Afficher les résultats
+            showResults(finalScore, categoryScores);
+        }
+
+        // Afficher les résultats
+        function showResults(finalScore, categoryScores) {
+            const resultsCard = document.getElementById('resultsCard');
+            const scoreCircle = document.getElementById('scoreCircle');
+            const finalScoreSpan = document.getElementById('finalScore');
+            const scoreText = document.getElementById('scoreText');
+            const categoryBreakdown = document.getElementById('categoryBreakdown');
+
+            // Définir le style du score
+            scoreCircle.className = 'score-circle';
+            if (finalScore >= 80) {
+                scoreCircle.classList.add('score-excellent');
+                scoreText.textContent = '🏆 Excellent ! Vous êtes prêt pour l\'examen oral CDA !';
+            } else if (finalScore >= 60) {
+                scoreCircle.classList.add('score-good');
+                scoreText.textContent = '👍 Bon travail ! Révisez les points faibles et vous serez au top !';
+            } else if (finalScore >= 40) {
+                scoreCircle.classList.add('score-average');
+                scoreText.textContent = '📚 Score moyen. Il faut encore réviser certains points clés.';
+            } else {
+                scoreCircle.classList.add('score-poor');
+                scoreText.textContent = '💪 Courage ! Consultez le Vademecum et les Flashcards pour progresser.';
+            }
+
+            finalScoreSpan.textContent = finalScore + '%';
+
+            // Générer le breakdown par catégorie
+            categoryBreakdown.innerHTML = '';
+            Object.keys(categoryScores).forEach(category => {
+                const score = categoryScores[category];
+                const percentage = Math.round((score.correct / score.total) * 100);
+
+                const categoryItem = document.createElement('div');
+                categoryItem.className = 'category-item';
+                categoryItem.innerHTML = `
+                    <div class="category-name">${category}</div>
+                    <div class="category-score">${percentage}%</div>
+                    <div style="font-size: 12px; color: #7f8c8d;">${score.correct}/${score.total}</div>
+                `;
+                categoryBreakdown.appendChild(categoryItem);
+            });
+
+            // Masquer le quiz et afficher les résultats
+            document.getElementById('quizCard').classList.remove('active');
+            resultsCard.classList.add('show');
+        }
+
+        // Recommencer le quiz
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            userAnswers = [];
+            startTime = null;
+
+            if (timerInterval) clearInterval(timerInterval);
+
+            document.getElementById('resultsCard').classList.remove('show');
+            document.getElementById('quizCard').classList.remove('active');
+            document.getElementById('startScreen').style.display = 'block';
+
+            document.getElementById('currentQuestion').textContent = '0';
+            document.getElementById('score').textContent = '0';
+            document.getElementById('timer').textContent = '00:00';
+        }
+
+        // Timer global
+        function startGlobalTimer() {
+            timerInterval = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                const minutes = Math.floor(elapsed / 60000);
+                const seconds = Math.floor((elapsed % 60000) / 1000);
+                document.getElementById('timer').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // Gestion des raccourcis clavier
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('quizCard').classList.contains('active')) {
+                switch(e.key) {
+                    case '1':
+                    case '2':
+                    case '3':
+                    case '4':
+                        const optionIndex = parseInt(e.key) - 1;
+                        if (optionIndex < window.quizQuestions[currentQuestionIndex].options.length) {
+                            selectOption(optionIndex);
+                        }
+                        break;
+                    case 'ArrowLeft':
+                        if (currentQuestionIndex > 0) {
+                            previousQuestion();
+                        }
+                        break;
+                    case 'ArrowRight':
+                        if (currentQuestionIndex < window.quizQuestions.length - 1) {
+                            nextQuestion();
+                        }
+                        break;
+                    case 'Enter':
+                        if (currentQuestionIndex === window.quizQuestions.length - 1) {
+                            submitQuiz();
+                        }
+                        break;
+                }
+            }
+        });
+    </script>
 </body>
 </html>
