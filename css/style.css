@@ -11,3 +11,18 @@
 .fade-in { animation: fadeIn 0.5s ease-in; }
 
 .slide-down { animation: slideDown 0.3s ease-out; }
+
+.option {
+    transition: all 0.2s ease;
+}
+.option:hover {
+    transform: scale(1.02);
+}
+.correct {
+    background-color: #22c55e !important;
+    color: white;
+}
+.incorrect {
+    background-color: #ef4444 !important;
+    color: white;
+}

@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Quiz interactif pour réviser le passage D2WM vers CDA avec 75 questions couvrant les 8 compétences.">
+    <meta name="author" content="ENI École Informatique">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Quiz D2WM → CDA">
+    <meta property="og:description" content="Testez vos compétences CDA avec ce quiz interactif.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="preview.png">
     <title>Quiz D2WM -> CDA - Concepteur Développeur d'Application</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./style/style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4f46e5">
 </head>
 <body class="bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 min-h-screen">
     <div class="container max-w-5xl mx-auto px-4 py-6">
@@ -35,6 +45,11 @@
                     <div class="text-sm text-gray-600">Temps</div>
                 </div>
             </div>
+            <div class="bg-yellow-50 rounded-2xl p-4">
+                <div id="levelBadge" class="text-xl font-bold text-yellow-600">🥉 Débutant</div>
+                <div class="text-sm text-gray-600">Niveau</div>
+            </div>
+            <div id="motivationMessage" class="text-lg text-gray-600 mt-4"></div>
         </div>
 
         <!-- Start Screen -->
@@ -56,9 +71,10 @@
                 </ul>
             </div>
 
-            <button onclick="startQuiz()" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-10 py-4 rounded-full text-xl font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300">
+            <button aria-label="Commencer le quiz" tabindex="0" onclick="startQuiz()" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-10 py-4 rounded-full text-xl font-bold hover:shadow-2xl hover:scale-105 transition-all duration-300">
                 Commencer le Quiz 🎓
             </button>
+            
         </div>
 
         <!-- Quiz Card -->
@@ -114,7 +130,9 @@
             </button>
         </div>
     </div>
-
+    <footer class="text-center text-white/70 mt-6 text-sm">
+        Projet pédagogique • ENI École Informatique • D2WM → CDA
+    </footer>
     <script src="./js/quizz-cda.js"></script>
     <script src="./js/script.js"></script>
 </body>

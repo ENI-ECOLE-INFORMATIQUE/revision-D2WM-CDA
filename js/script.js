@@ -259,3 +259,19 @@
                 submitQuiz();
             }
         });
+
+function updateLevel(score) {
+    const badge = document.getElementById("levelBadge");
+
+    if (score >= 80) badge.textContent = "👑 Boss CDA";
+    else if (score >= 60) badge.textContent = "🥇 Confirmé";
+    else if (score >= 40) badge.textContent = "🥈 Intermédiaire";
+    else badge.textContent = "🥉 Débutant";
+}
+
+function getMotivation(score) {
+    if (score >= 80) return "🔥 Excellent ! Tu es prêt pour le CDA !";
+    if (score >= 60) return "💪 Très bon ! Encore un petit effort.";
+    if (score >= 40) return "📈 Continue, tu progresses bien.";
+    return "🚀 Ne lâche rien, la progression est en cours !";
+}
