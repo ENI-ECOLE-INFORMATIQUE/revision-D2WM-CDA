@@ -1,7 +1,7 @@
 # 🚀 Révision D2WM → CDA
 
 Bienvenue sur ce dépôt de révision dédié aux apprenants en formation  
-**D2WM (Développeur Web & Web Mobile)** et **CDA (Concepteur Développeur d’Applications)** de l’:contentReference[oaicite:0]{index=0}.
+**D2WM (Développeur Web & Web Mobile)** et **CDA (Concepteur Développeur d’Applications)**
 
 🎯 Objectif : consolider les compétences, pratiquer et monter en niveau pour réussir le passage vers le CDA et le monde professionnel.
 
@@ -47,7 +47,7 @@ Ce repository regroupe différents supports de révision :
 
 ## 🎓 Contexte pédagogique
 
-Les formations D2WM et CDA permettent d’accéder à des compétences professionnelles reconnues dans le développement logiciel, avec des titres inscrits au RNCP :contentReference[oaicite:1]{index=1}.
+Les formations D2WM et CDA permettent d’accéder à des compétences professionnelles reconnues dans le développement logiciel, avec des titres inscrits au RNCP.
 
 👉 Ce dépôt vise à :
 - renforcer les bases techniques
@@ -62,6 +62,8 @@ Les formations D2WM et CDA permettent d’accéder à des compétences professio
 1. **Cloner le projet**
 ```bash
 git clone https://github.com/ENI-ECOLE-INFORMATIQUE/revision-D2WM-CDA.git
+```
+---
 
 ##💡 Conseils pour réussir
 - Coder tous les jours
